@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="style/fonts.css">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="java_script/script.js"></script>
+    <script src="java_script/computer-logic.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,102 @@
 </head>
 
 <body>
+    <div class="main-div" id="main-div">
+        <table>
+            <tr>
+                <td onclick="gameStart(1)" id="1"></td>
+                <td onclick="gameStart(2)" id="2"></td>
+                <td onclick="gameStart(3)" id="3"></td>
+            </tr>
+            <tr>
+                <td onclick="gameStart(4)" id="4"></td>
+                <td onclick="gameStart(5)" id="5"></td>
+                <td onclick="gameStart(6)" id="6"></td>
+            </tr>
+            <tr>
+                <td onclick="gameStart(7)" id="7"></td>
+                <td onclick="gameStart(8)" id="8"></td>
+                <td onclick="gameStart(9)" id="9"></td>
+            </tr>
+        </table>
 
+        <div class="game-info">
+
+            <div class="user-counter-div">
+                <div class="user-span">
+                    <div>
+                        <span>Spieler 1</span>
+                    </div>
+                    <div>
+                        <span>-</span>
+                    </div>
+                    <div>
+                        <span>Computer</span>
+                    </div>
+                </div>
+
+                <div class="counter">
+                    <div>
+                        <span id="player1">0</span>
+                    </div>
+
+                    <div>
+                        <span id="undecided">0</span>
+                    </div>
+
+                    <div>
+                        <span id="player2">0</span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="game-mode" onclick="showGameModePopover()">
+                <div>
+                    <img id="user-img" src="img/singleplayer.png">
+                </div>
+                <div>
+                    <span id="user-number">1</span>
+                    <span>- Sp.</span>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="footer">
+        <div>
+            <a href="https://www.flaticon.com/de/kostenlose-icons/kontrollkastchen"
+                title="kontrollkästchen Icons">Kontrollkästchen Icons erstellt von rukanicon - Flaticon</a>
+        </div>
+        <div>
+            <a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icons created by Fuzzee -
+                Flaticon</a>
+        </div>
+        <div>
+            <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Ilham Fitrotul
+                Hayat - Flaticon</a>
+        </div>
+
+        <div><a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Tempo_doloe -
+                Flaticon</a></div>
+
+    </div>
+
+    <div class="dim-display d-none" id="dim-display">
+        <div class="popover">
+            <div>
+                <span>Mit der Änderung des Spielmodus, werden aktuelle Rundenergebnisse auf Null zurückgesetzt!</span>
+            </div>
+
+            <div class="popover-button-div">
+                <button onclick="closeGameModePopover()">Abbrechen</button>
+                <button onclick="changeGameMode()">Bestätigen</button>
+            </div>
+
+        </div>
+    </div>
 </body>
 
 </html>
