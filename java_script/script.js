@@ -22,16 +22,28 @@ function showImgVsHuman(i) {
     if (td.getElementsByTagName('img').length > 0) { } else {
 
         if (player == 'Spieler 1') {
+            pointerYesOrNo('no');
             playerAction(i, td, 'kreis');
-            setTimeout(function () { player = 'Spieler 2' }, 1000);
+            playerTiemeout('Spieler 2')
         } else {
             if (player == 'Spieler 2') {
+                pointerYesOrNo('no');
                 playerAction(i, td, 'x');
-                setTimeout(function () { player = 'Spieler 1' }, 1000);
+                playerTiemeout('Spieler 1')
             }
         }
     }
 }
+
+
+function playerTiemeout(playerName) {
+    if (fields.length == 0) {
+        setTimeout(function () { pointerYesOrNo('yes'), player = playerName }, 2100);
+    } else {
+        setTimeout(function () { pointerYesOrNo('yes'), player = playerName }, 500);
+    }
+}
+
 
 
 function showImgVsPc(i) {
@@ -203,9 +215,9 @@ function showGameModePopover() {
 
 function changeGameMode() {
     if (gameMode == 0) {
-        activateGameMode('Spieler 2', 'twoplayer', 1)
+        activateGameMode('Spieler 2', 'twoplayer', 1);
     } else {
-        activateGameMode('Spieler 1', 'singleplayer', 0)
+        activateGameMode('Spieler 1', 'singleplayer', 0);
     }
     closeGameModePopover();
 }
@@ -215,7 +227,7 @@ function activateGameMode(playerName, imgName, modeNum) {
     clearGameStatus();
     secondPlayerNameinnerHTML(`${playerName}`)
     changeGameModeImg(`${imgName}`);
-    gameModeNumberinnerHTML(2);
+    gameModeNumberinnerHTML(modeNum + 1);
     gameMode = modeNum;
 }
 
@@ -263,4 +275,15 @@ function clearCounterinnerHTML() {
     p1Counter.innerHTML = 0;
     p2Counter.innerHTML = 0;
     undicided.innerHTML = 0;
+}
+
+function showImpressumOrPrivacyPolicy(imp_pri) {
+    let impPri = document.getElementById(`${imp_pri}`);
+    impPri.classList.remove('d-none');
+}
+
+
+function closeImpressumOrPrivacyPolicy(imp_pri) {
+    let impPri = document.getElementById(`${imp_pri}`);
+    impPri.classList.add('d-none');
 }
