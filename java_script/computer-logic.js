@@ -18,8 +18,17 @@ function computer() {
     getFieldinnerHtml(td, 'x');
     fields[fieldNum - 1] = 'x';
     checkForWinner();
-    setTimeout(function () { player = 'Spieler 1', 1000 });
-    pointerYesOrNo(0);
+    setPlayerOne();
+
+}
+
+
+function setPlayerOne() {
+    if (fields.length == 0) {
+        setTimeout(function () { pointerYesOrNo('yes'), player = 'Spieler 1' }, 2100);
+    } else {
+        setTimeout(function () { pointerYesOrNo('yes'), player = 'Spieler 1' }, 500);
+    }
 }
 
 
@@ -127,8 +136,20 @@ function checkForBestField(cycleOrX) {
 }
 
 
+function generateNum(min, max) {
+    let random;
+    while (!random) {
+        /*erzeugt Nummer zwischen min und max, ausgenommen, Nummern die in der excluded List sind*/
+        const x = Math.floor(Math.random() * (max - min + 1)) + min;
+        if (excludedNumbers.indexOf(x) === -1) random = x;
+    }
+    return random;
+}
+
+
 function checkForHorizontalOptions(cycleOrX) {
     let number;
+    /*obere Reihe*/
     if (fields[0] == `${cycleOrX}` && fields[1] == `${cycleOrX}`) {
         number = checkField(2 + 1);
         if (number >= 1) {
@@ -148,8 +169,7 @@ function checkForHorizontalOptions(cycleOrX) {
             return 0;
         }
     }
-
-
+    /*mittlere Reihe*/
     if (fields[3] == `${cycleOrX}` && fields[4] == `${cycleOrX}`) {
         number = checkField(5 + 1);
         if (number >= 1) {
@@ -168,8 +188,7 @@ function checkForHorizontalOptions(cycleOrX) {
             return 3;
         }
     }
-
-
+    /*untere Reihe*/
     if (fields[6] == `${cycleOrX}` && fields[7] == `${cycleOrX}`) {
         number = checkField(8 + 1);
         if (number >= 1) {
@@ -193,6 +212,7 @@ function checkForHorizontalOptions(cycleOrX) {
 
 function checkForVerticalOptions(cycleOrX) {
     let number;
+    /*linke Reihe*/
     if (fields[0] == `${cycleOrX}` && fields[3] == `${cycleOrX}`) {
         number = checkField(6 + 1);
         if (number >= 1) {
@@ -211,8 +231,7 @@ function checkForVerticalOptions(cycleOrX) {
             return 0;
         }
     }
-
-
+    /*mittlere Reihe*/
     if (fields[1] == `${cycleOrX}` && fields[4] == `${cycleOrX}`) {
         number = checkField(7 + 1);
         if (number >= 1) {
@@ -231,8 +250,7 @@ function checkForVerticalOptions(cycleOrX) {
             return 1;
         }
     }
-
-
+    /*rechte Reihe*/
     if (fields[2] == `${cycleOrX}` && fields[5] == `${cycleOrX}`) {
         number = checkField(8 + 1);
         if (number >= 1) {
@@ -275,7 +293,6 @@ function checkForQuerOptions(cycleOrX) {
             return 0;
         }
     }
-
     /*von Links unten nach Rechts oben Abfragen*/
     if (fields[6] == `${cycleOrX}` && fields[4] == `${cycleOrX}`) {
         number = checkField(2 + 1);
@@ -295,15 +312,4 @@ function checkForQuerOptions(cycleOrX) {
             return 6;
         }
     }
-}
-
-
-function generateNum(min, max) {
-    let random;
-    while (!random) {
-        /*erzeugt Nummer zwischen min und max, ausgenommen, Nummern die in der excluded List sind*/
-        const x = Math.floor(Math.random() * (max - min + 1)) + min;
-        if (excludedNumbers.indexOf(x) === -1) random = x;
-    }
-    return random;
 }

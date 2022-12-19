@@ -1,71 +1,34 @@
-let player = 'Spieler 1';
+let excludedNumbers = [];
 let fields = [];
+
+let player = 'Spieler 1';
 let player1Counter = 0;
 let player2Counter = 0;
 let undecidedCounter = 0;
 let gameMode = 0;
-let excludedNumbers = [];
 
-function showGameModePopover() {
-    let dimDisplay = document.getElementById('dim-display');
-    dimDisplay.classList.remove('d-none');
-}
-
-function changeGameMode() {
-    if (gameMode == 0) {
-        changeGameModeImg('twoplayer');
-        gameModeNumberinnerHTML(2);
-        gameMode = 1;
-    } else {
-        changeGameModeImg('singleplayer');
-        gameModeNumberinnerHTML(1);
-        gameMode = 0;
-    }
-    closeGameModePopover();
-}
-
-function gameModeNumberinnerHTML(ModeNumber) {
-    let number = document.getElementById('user-number');
-    number.innerHTML = ModeNumber;
-}
-
-function changeGameModeImg(img) {
-    let img = document.getElementById('user-img');
-    img.src = `img/${img}.png`;
-}
-
-function closeGameModePopover() {
-    let dimDisplay = document.getElementById('dim-display');
-    dimDisplay.classList.add('d-none');
-}
 
 function gameStart(i) {
     if (gameMode == 0) {
         showImgVsPc(i);
     } else {
-        showImg(i);
+        showImgVsHuman(i);
     }
 }
 
 
-function showImg(i) {
+function showImgVsHuman(i) {
     let td = document.getElementById(`${i}`);
-
     if (td.getElementsByTagName('img').length > 0) { } else {
 
         if (player == 'Spieler 1') {
-            getFieldinnerHtml(td, 'kreis');
-            fields[i - 1] = 'kreis';
-            player = 'Spieler 2'
-            checkForWinner();
+            playerAction(i, td, 'kreis');
+            setTimeout(function () { player = 'Spieler 2' }, 1000);
         } else {
-
             if (player == 'Spieler 2') {
-                getFieldinnerHtml(td, 'x')
-                fields[i - 1] = 'x';
-                player = 'Spieler 1';
-                checkForWinner();
-            } else { }
+                playerAction(i, td, 'x');
+                setTimeout(function () { player = 'Spieler 1' }, 1000);
+            }
         }
     }
 }
@@ -73,18 +36,21 @@ function showImg(i) {
 
 function showImgVsPc(i) {
     let td = document.getElementById(`${i}`);
-
     if (td.getElementsByTagName('img').length > 0) { } else {
 
         if (player == 'Spieler 1') {
-            pointerYesOrNo(1);
-            getFieldinnerHtml(td, 'kreis');
-            fields[i - 1] = 'kreis';
-            checkForWinner();
+            pointerYesOrNo('no');
+            playerAction(i, td, 'kreis');
             computerTimeoutBeforeAct();
-
         } else { }
     }
+}
+
+
+function playerAction(i, td, cycleOrX) {
+    getFieldinnerHtml(td, cycleOrX);
+    fields[i - 1] = cycleOrX;
+    checkForWinner();
 }
 
 
@@ -130,11 +96,10 @@ function checkForWinner() {
 function checkIfUndicided() {
     /*.reduce ignoriert leere stellen im Array. Dass zwischen den klammern war schon so.*/
     let realLength = fields.reduce((acc, cv) => (cv) ? acc + 1 : acc, 0);
-    console.log(`länge ist ${realLength}`)
     /*unentschieden abfrage*/
     if (realLength == 9) {
         nextRound('undicided')
-    } else { console.log(`nicht 9`) }
+    } else { }
 }
 
 
@@ -167,7 +132,6 @@ function checkVertikalofThree() {
 
 
 function checkHorizontalOfThree() {
-
     /*vertikale abfragen*/
     if (fields[0] == fields[3] && fields[3] == fields[6] && fields[0]) {
         nextRound()
@@ -184,34 +148,119 @@ function checkHorizontalOfThree() {
 
 
 function updateCounter(undecidedI) {
-    let p1Counter = document.getElementById('player1');
-    let p2Counter = document.getElementById('player2');
-    let undicided = document.getElementById('undecided');
-    console.log(undecidedI);
-
     if (undecidedI == 'undicided') {
         undecidedCounter++;
-        undicided.innerHTML = undecidedCounter;
+        undicidedCounterinnerHTML();
     } else {
         if (player == 'Spieler 1') {
             player1Counter++;
-            p1Counter.innerHTML = player1Counter;
+            p1CounterinnerHTML();
         }
         if (player == 'Spieler 2') {
             player2Counter++;
-            p2Counter.innerHTML = player2Counter;
+            p2CounterinnerHTML();
         }
     }
+}
+
+
+function undicidedCounterinnerHTML() {
+    let undicided = document.getElementById('undecided');
+    undicided.innerHTML = undecidedCounter;
+}
+
+
+function p1CounterinnerHTML() {
+    let p1Counter = document.getElementById('player1');
+    p1Counter.innerHTML = player1Counter;
+
+}
+
+
+function p2CounterinnerHTML() {
+    let p2Counter = document.getElementById('player2');
+    p2Counter.innerHTML = player2Counter;
 
 }
 
 
 function pointerYesOrNo(YesNo) {
     let mainDiv = document.getElementById('main-div');
-    if (YesNo == 1) {
+    if (YesNo == 'no') {
         mainDiv.classList.add('pointer-none');
-    } else { }
-    if (YesNo == 0) {
+    }
+    if (YesNo == 'yes') {
         mainDiv.classList.remove('pointer-none');
-    } else { }
+    }
+}
+
+
+function showGameModePopover() {
+    let dimDisplay = document.getElementById('dim-display');
+    dimDisplay.classList.remove('d-none');
+}
+
+
+function changeGameMode() {
+    if (gameMode == 0) {
+        activateGameMode('Spieler 2', 'twoplayer', 1)
+    } else {
+        activateGameMode('Spieler 1', 'singleplayer', 0)
+    }
+    closeGameModePopover();
+}
+
+
+function activateGameMode(playerName, imgName, modeNum) {
+    clearGameStatus();
+    secondPlayerNameinnerHTML(`${playerName}`)
+    changeGameModeImg(`${imgName}`);
+    gameModeNumberinnerHTML(2);
+    gameMode = modeNum;
+}
+
+
+function clearGameStatus() {
+    clearField();
+    clearCounterinnerHTML();
+    player1Counter = 0;
+    player2Counter = 0;
+    undecidedCounter = 0;
+    excludedNumbers.length = 0;
+    fields.length = 0;
+}
+
+
+function secondPlayerNameinnerHTML(playerName) {
+    let playerNameSpan = document.getElementById('second-player');
+    playerNameSpan.innerHTML = `${playerName}`;
+}
+
+
+function gameModeNumberinnerHTML(ModeNumber) {
+    let number = document.getElementById('user-number');
+    number.innerHTML = ModeNumber;
+}
+
+
+function changeGameModeImg(imgName) {
+    let img = document.getElementById('user-img');
+    img.src = `img/${imgName}.png`;
+}
+
+
+function closeGameModePopover() {
+    let dimDisplay = document.getElementById('dim-display');
+    dimDisplay.classList.add('d-none');
+}
+
+
+function clearCounterinnerHTML() {
+    let p1Counter = document.getElementById('player1');
+    let p2Counter = document.getElementById('player2');
+    let undicided = document.getElementById('undecided');
+
+    p1Counter.innerHTML = 0;
+    p2Counter.innerHTML = 0;
+    undicided.innerHTML = 0;
 }
