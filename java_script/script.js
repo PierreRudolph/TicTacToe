@@ -19,42 +19,37 @@ function gameStart(position) {
 
 function showImgVsHuman(position) {
     let td = document.getElementById(`field-${position}`);
-    if (td.getElementsByTagName('img').length > 0) { } else {
 
-        if (player == 'Spieler-1') {
-            playerAction(position, td, 'kreis');
-            playerNameInactive(player);
-            playerTimeout('Spieler-2')
-        } else {
-            if (player == 'Spieler-2') {
-                playerAction(position, td, 'x');
-                playerNameInactive(player);
-                playerTimeout('Spieler-1')
-            }
-        }
+    if (checkPlayerAndIfFieldFree(td, 'Spieler-1')) {
+        playerAction(position, td, 'kreis');
+        playerTimeout('Spieler-2')
+    }
+    if (checkPlayerAndIfFieldFree(td, 'Spieler-2')) {
+        playerAction(position, td, 'x');
+        playerTimeout('Spieler-1')
     }
 }
 
 
 function showImgVsPc(position) {
     let td = document.getElementById(`field-${position}`);
-    if (td.getElementsByTagName('img').length > 0) { } else {
-
-        if (player == 'Spieler-1') {
-            playerNameActive(player);
-            playerAction(position, td, 'kreis');
-            computerTimeoutBeforeAct();
-        }
+    if (checkPlayerAndIfFieldFree(td, 'Spieler-1')) {
+        playerNameActive(player);
+        playerAction(position, td, 'kreis');
+        computerTimeoutBeforeAct();
     }
 }
 
 
+function checkPlayerAndIfFieldFree(td, playerName) {
+    if (td.getElementsByTagName('img').length <= 0 && player == `${playerName}`)
+        return 1;
+}
+
+
 function playerTimeout(playerName) {
-    if (fields.length == 0) {
-        setTimeout(function () { playerActivate(playerName) }, 2100);
-    } else {
-        setTimeout(function () { playerActivate(playerName) }, 500);
-    }
+    const timeout = fields.length == 0 ? 2100 : 500;
+    setTimeout(function () { playerActivate(playerName) }, timeout);
 }
 
 
@@ -67,6 +62,7 @@ function playerActivate(playerName) {
 
 
 function playerAction(position, td, cycleOrX) {
+    playAnySound(`${player}-sound`)
     pointerYesOrNo('no');
     fields[position - 1] = cycleOrX;
     getFieldinnerHtml(position, td, cycleOrX);
@@ -102,7 +98,7 @@ function checkIfUndicided() {
     if (realLength == 9) {
         highlightUndecided();
         nextRound('undicided')
-    } else { }
+    }
 }
 
 
@@ -111,12 +107,12 @@ function checkQuerOfThree() {
     if (fields[0] == fields[4] && fields[4] == fields[8] && fields[0]) {
         highlightWinner(1, 5, 9);
         nextRound();
-    } else { }
+    }
 
     if (fields[2] == fields[4] && fields[4] == fields[6] && fields[2]) {
         highlightWinner(3, 5, 7);
         nextRound();
-    } else { }
+    }
 }
 
 
@@ -125,17 +121,17 @@ function checkVertikalofThree() {
     if (fields[0] == fields[1] && fields[1] == fields[2] && fields[0]) {
         highlightWinner(1, 2, 3);
         nextRound();
-    } else { }
+    }
 
     if (fields[3] == fields[4] && fields[4] == fields[5] && fields[3]) {
         highlightWinner(4, 5, 6);
         nextRound();
-    } else { }
+    }
 
     if (fields[6] == fields[7] && fields[7] == fields[8] && fields[6]) {
         highlightWinner(7, 8, 9);
         nextRound();
-    } else { }
+    }
 }
 
 
@@ -144,17 +140,17 @@ function checkHorizontalOfThree() {
     if (fields[0] == fields[3] && fields[3] == fields[6] && fields[0]) {
         highlightWinner(1, 4, 7);
         nextRound();
-    } else { }
+    }
 
     if (fields[1] == fields[4] && fields[4] == fields[7] && fields[1]) {
         highlightWinner(2, 5, 8);
         nextRound();
-    } else { }
+    }
 
     if (fields[2] == fields[5] && fields[5] == fields[8] && fields[2]) {
         highlightWinner(3, 6, 9);
         nextRound();
-    } else { }
+    }
 }
 
 
@@ -205,15 +201,29 @@ function updateCounter(undecidedI) {
     if (undecidedI == 'undicided') {
         undecidedCounter++;
         undicidedCounterinnerHTML();
+        return;
+    }
+
+    if (player == 'Spieler-1') {
+        playAnySound('winning-sound');
+        player1Counter++;
+        p1CounterinnerHTML();
+        return;
+    }
+
+    if (player == 'Spieler-2') {
+        checkIfVsPcOrVsHumanSound();
+        player2Counter++;
+        p2CounterinnerHTML();
+    }
+}
+
+
+function checkIfComputerOrPlayerSound() {
+    if (gameMode == 1) {
+        playAnySound('winning-sound');
     } else {
-        if (player == 'Spieler-1') {
-            player1Counter++;
-            p1CounterinnerHTML();
-        }
-        if (player == 'Spieler-2') {
-            player2Counter++;
-            p2CounterinnerHTML();
-        }
+        playAnySound('winning-sound-reverse');
     }
 }
 
@@ -331,12 +341,31 @@ function closeImpressumOrPrivacyPolicy(imp_pri) {
     impPri.classList.add('d-none');
 }
 
+
 function playerNameActive() {
     let playerSpan = document.getElementById(`${player}`);
     playerSpan.classList.add('player-active');
 }
 
+
 function playerNameInactive() {
     let playerSpan = document.getElementById(`${player}`);
     playerSpan.classList.remove('player-active');
+}
+
+
+function playBackgroundMusic() {
+    let music = document.getElementById('background-music');
+    music.volume = 0.3;
+    music.load();
+    music.play();
+    music.loop = true;
+}
+
+
+function playAnySound(soundName) {
+    let sound = new Audio(src = `sound/${soundName}.mp3`);
+    sound.volume = 0.6;
+    sound.load();
+    sound.play();
 }
