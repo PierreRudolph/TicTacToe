@@ -10,25 +10,19 @@ function computerTimeoutBeforeAct() {
 
 
 function computer() {
-    player = 'Spieler 2';
+    playerNameInactive(player);
+    player = 'Spieler-2';
+    playerNameActive(player);
     let fieldNum = calculateField();
 
-    td = document.getElementById(fieldNum);
+    td = document.getElementById(`field-${fieldNum}`);
 
-    getFieldinnerHtml(td, 'x');
+    getFieldinnerHtml(fieldNum, td, 'x');
     fields[fieldNum - 1] = 'x';
     checkForWinner();
-    setPlayerOne();
-
-}
+    playerTimeout('Spieler-1');
 
 
-function setPlayerOne() {
-    if (fields.length == 0) {
-        setTimeout(function () { pointerYesOrNo('yes'), player = 'Spieler 1' }, 2100);
-    } else {
-        setTimeout(function () { pointerYesOrNo('yes'), player = 'Spieler 1' }, 500);
-    }
 }
 
 
@@ -132,6 +126,16 @@ function checkForBestField(cycleOrX) {
                 return 0;
             }
         }
+    }
+}
+
+
+function checkField(number) {
+    let td = document.getElementById(`field-${number}`);
+    if (td.getElementsByTagName('img').length > 0) {
+        return 0;
+    } else {
+        return number;
     }
 }
 

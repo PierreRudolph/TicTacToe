@@ -33,36 +33,38 @@
 
 <body>
     <div class="main-div" id="main-div">
+
         <table>
             <tr>
-                <td onclick="gameStart(1)" id="1"></td>
-                <td onclick="gameStart(2)" id="2"></td>
-                <td onclick="gameStart(3)" id="3"></td>
+                <td onclick="gameStart(1)" id="field-1"></td>
+                <td onclick="gameStart(2)" id="field-2"></td>
+                <td onclick="gameStart(3)" id="field-3"></td>
             </tr>
             <tr>
-                <td onclick="gameStart(4)" id="4"></td>
-                <td onclick="gameStart(5)" id="5"></td>
-                <td onclick="gameStart(6)" id="6"></td>
+                <td onclick="gameStart(4)" id="field-4"></td>
+                <td onclick="gameStart(5)" id="field-5"></td>
+                <td onclick="gameStart(6)" id="field-6"></td>
             </tr>
             <tr>
-                <td onclick="gameStart(7)" id="7"></td>
-                <td onclick="gameStart(8)" id="8"></td>
-                <td onclick="gameStart(9)" id="9"></td>
+                <td onclick="gameStart(7)" id="field-7"></td>
+                <td onclick="gameStart(8)" id="field-8"></td>
+                <td onclick="gameStart(9)" id="field-9"></td>
             </tr>
         </table>
 
         <div class="game-info">
 
             <div class="user-counter-div">
+
                 <div class="user-span">
                     <div>
-                        <span>Spieler 1</span>
+                        <span class="player-active" id="Spieler-1">Spieler-1</span>
                     </div>
                     <div>
                         <span>-</span>
                     </div>
                     <div>
-                        <span id="second-player">Computer</span>
+                        <span id="Spieler-2">Computer</span>
                     </div>
                 </div>
 
@@ -78,10 +80,11 @@
                     <div>
                         <span id="player2">0</span>
                     </div>
-
                 </div>
             </div>
+
             <div class="game-mode" onclick="showGameModePopover()">
+
                 <div>
                     <img id="user-img" src="img/singleplayer.png">
                 </div>
@@ -89,56 +92,45 @@
                     <span id="user-number">1</span>
                     <span>- Sp.</span>
                 </div>
-
             </div>
-
-
         </div>
-
     </div>
+
     <div class="footer">
 
         <div>
-            <span>Tic Tac Toe 2022 Pierre Lettner</span>
-        </div>
-
-        <div>
-            <a onclick="showImpressumOrPrivacyPolicy('impressum')" href="#" class="">Impressum</a>
-        </div>
-        <div>
-            <a onclick="showImpressumOrPrivacyPolicy('privacy-policy')" href="#" class="">Datenschutzerklärung</a>
-        </div>
-
-
-
-        <div>
-            <a href="https://www.flaticon.com/de/kostenlose-icons/kontrollkastchen"
-                title="kontrollkästchen Icons">Kontrollkästchen Icons erstellt von rukanicon - Flaticon</a>
-        </div>
-        <div>
-            <a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icon created by Fuzzee -
-                Flaticon</a>
-        </div>
-        <div>
-            <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icon created by Ilham Fitrotul
-                Hayat - Flaticon</a>
-        </div>
-
-        <div><a href="https://www.flaticon.com/free-icons/user" title="user icons">User icon created by Tempo_doloe -
-                Flaticon</a></div>
-    </div>
-
-    <div class="dim-display d-none" id="dim-display">
-        <div class="popover">
             <div>
-                <span>Mit der Änderung des Spielmodus, werden alle Werte auf null zurückgesetzt!</span>
+                <span>Tic Tac Toe 2022 Pierre Lettner</span>
             </div>
 
-            <div class="popover-button-div">
-                <button onclick="closeGameModePopover()">Abbrechen</button>
-                <button onclick="changeGameMode()">Bestätigen</button>
+            <div>
+                <a onclick="showImpressumOrPrivacyPolicy('impressum')" href="#" class="">Impressum</a>
+            </div>
+            <div>
+                <a onclick="showImpressumOrPrivacyPolicy('privacy-policy')" href="#" class="">Datenschutzerklärung</a>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <a href="https://www.flaticon.com/de/kostenlose-icons/kontrollkastchen"
+                    title="kontrollkästchen Icons">Kontrollkästchen Icons erstellt von rukanicon - Flaticon</a>
+            </div>
+            <div>
+                <a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icon created by Fuzzee -
+                    Flaticon</a>
+            </div>
+            <div>
+                <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icon created by Ilham
+                    Fitrotul
+                    Hayat - Flaticon</a>
             </div>
 
+            <div>
+                <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icon created by Tempo_doloe
+                    -
+                    Flaticon</a>
+            </div>
         </div>
     </div>
 
@@ -285,6 +277,19 @@
 
     </div>
 
+    <div class="dim-display d-none" id="dim-display">
+        <div class="popover">
+            <div>
+                <span>Mit der Änderung des Spielmodus, werden alle Werte auf null zurückgesetzt!</span>
+            </div>
+
+            <div class="popover-button-div">
+                <button onclick="closeGameModePopover()">Abbrechen</button>
+                <button onclick="changeGameMode()">Bestätigen</button>
+            </div>
+
+        </div>
+    </div>
 </body>
 
 </html>

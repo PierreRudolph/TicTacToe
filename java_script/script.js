@@ -1,91 +1,81 @@
 let excludedNumbers = [];
 let fields = [];
 
-let player = 'Spieler 1';
+let player = 'Spieler-1';
 let player1Counter = 0;
 let player2Counter = 0;
 let undecidedCounter = 0;
 let gameMode = 0;
 
 
-function gameStart(i) {
+function gameStart(position) {
     if (gameMode == 0) {
-        showImgVsPc(i);
+        showImgVsPc(position);
     } else {
-        showImgVsHuman(i);
+        showImgVsHuman(position);
     }
 }
 
 
-function showImgVsHuman(i) {
-    let td = document.getElementById(`${i}`);
+function showImgVsHuman(position) {
+    let td = document.getElementById(`field-${position}`);
     if (td.getElementsByTagName('img').length > 0) { } else {
 
-        if (player == 'Spieler 1') {
-            pointerYesOrNo('no');
-            playerAction(i, td, 'kreis');
-            playerTiemeout('Spieler 2')
+        if (player == 'Spieler-1') {
+            playerAction(position, td, 'kreis');
+            playerNameInactive(player);
+            playerTimeout('Spieler-2')
         } else {
-            if (player == 'Spieler 2') {
-                pointerYesOrNo('no');
-                playerAction(i, td, 'x');
-                playerTiemeout('Spieler 1')
+            if (player == 'Spieler-2') {
+                playerAction(position, td, 'x');
+                playerNameInactive(player);
+                playerTimeout('Spieler-1')
             }
         }
     }
 }
 
 
-function playerTiemeout(playerName) {
-    if (fields.length == 0) {
-        setTimeout(function () { pointerYesOrNo('yes'), player = playerName }, 2100);
-    } else {
-        setTimeout(function () { pointerYesOrNo('yes'), player = playerName }, 500);
-    }
-}
-
-
-
-function showImgVsPc(i) {
-    let td = document.getElementById(`${i}`);
+function showImgVsPc(position) {
+    let td = document.getElementById(`field-${position}`);
     if (td.getElementsByTagName('img').length > 0) { } else {
 
-        if (player == 'Spieler 1') {
-            pointerYesOrNo('no');
-            playerAction(i, td, 'kreis');
+        if (player == 'Spieler-1') {
+            playerNameActive(player);
+            playerAction(position, td, 'kreis');
             computerTimeoutBeforeAct();
-        } else { }
+        }
     }
 }
 
 
-function playerAction(i, td, cycleOrX) {
-    getFieldinnerHtml(td, cycleOrX);
-    fields[i - 1] = cycleOrX;
+function playerTimeout(playerName) {
+    if (fields.length == 0) {
+        setTimeout(function () { playerActivate(playerName) }, 2100);
+    } else {
+        setTimeout(function () { playerActivate(playerName) }, 500);
+    }
+}
+
+
+function playerActivate(playerName) {
+    playerNameInactive(player);
+    pointerYesOrNo('yes');
+    player = playerName;
+    playerNameActive(player)
+}
+
+
+function playerAction(position, td, cycleOrX) {
+    pointerYesOrNo('no');
+    fields[position - 1] = cycleOrX;
+    getFieldinnerHtml(position, td, cycleOrX);
     checkForWinner();
 }
 
 
-function getFieldinnerHtml(td, img) {
-    td.innerHTML =/*html*/`<img src="img/${img}.png" class="cycle">`;
-}
-
-
-function checkField(number) {
-    let td = document.getElementById(`${number}`);
-    if (td.getElementsByTagName('img').length > 0) {
-        return 0;
-    } else {
-        return number;
-    }
-}
-
-
-function clearField() {
-    for (let i = 1; i <= 9; i++) {
-        let td = document.getElementById(`${i}`);
-        td.innerHTML = '';
-    }
+function getFieldinnerHtml(position, td, cycleOrX) {
+    td.innerHTML =/*html*/`<img id="img-${position}" src="img/${cycleOrX}.png" class="cycle">`;
 }
 
 
@@ -110,6 +100,7 @@ function checkIfUndicided() {
     let realLength = fields.reduce((acc, cv) => (cv) ? acc + 1 : acc, 0);
     /*unentschieden abfrage*/
     if (realLength == 9) {
+        highlightUndecided();
         nextRound('undicided')
     } else { }
 }
@@ -118,11 +109,13 @@ function checkIfUndicided() {
 function checkQuerOfThree() {
     /*Quer abfragen*/
     if (fields[0] == fields[4] && fields[4] == fields[8] && fields[0]) {
-        nextRound()
+        highlightWinner(1, 5, 9);
+        nextRound();
     } else { }
 
     if (fields[2] == fields[4] && fields[4] == fields[6] && fields[2]) {
-        nextRound()
+        highlightWinner(3, 5, 7);
+        nextRound();
     } else { }
 }
 
@@ -130,15 +123,18 @@ function checkQuerOfThree() {
 function checkVertikalofThree() {
     /*horizontale abfragen*/
     if (fields[0] == fields[1] && fields[1] == fields[2] && fields[0]) {
-        nextRound()
+        highlightWinner(1, 2, 3);
+        nextRound();
     } else { }
 
     if (fields[3] == fields[4] && fields[4] == fields[5] && fields[3]) {
-        nextRound()
+        highlightWinner(4, 5, 6);
+        nextRound();
     } else { }
 
     if (fields[6] == fields[7] && fields[7] == fields[8] && fields[6]) {
-        nextRound()
+        highlightWinner(7, 8, 9);
+        nextRound();
     } else { }
 }
 
@@ -146,16 +142,62 @@ function checkVertikalofThree() {
 function checkHorizontalOfThree() {
     /*vertikale abfragen*/
     if (fields[0] == fields[3] && fields[3] == fields[6] && fields[0]) {
-        nextRound()
+        highlightWinner(1, 4, 7);
+        nextRound();
     } else { }
 
     if (fields[1] == fields[4] && fields[4] == fields[7] && fields[1]) {
-        nextRound()
+        highlightWinner(2, 5, 8);
+        nextRound();
     } else { }
 
     if (fields[2] == fields[5] && fields[5] == fields[8] && fields[2]) {
-        nextRound()
+        highlightWinner(3, 6, 9);
+        nextRound();
     } else { }
+}
+
+
+function clearField() {
+    for (let i = 1; i <= 9; i++) {
+        let td = document.getElementById(`field-${i}`);
+        td.innerHTML = '';
+    }
+}
+
+
+function highlightWinner(fieldOne, fieldTwo, fieldThree) {
+    let field1 = document.getElementById(`img-${fieldOne}`);
+    let field2 = document.getElementById(`img-${fieldTwo}`);
+    let field3 = document.getElementById(`img-${fieldThree}`);
+    field1.classList.add('blinking-winner');
+    field2.classList.add('blinking-winner');
+    field3.classList.add('blinking-winner');
+    setTimeout(function () { removeHighlightWinner(field1, field2, field3) }, 1500);
+}
+
+
+function removeHighlightWinner(field1, field2, field3) {
+    field1.classList.remove('blinking-winner');
+    field2.classList.remove('blinking-winner');
+    field3.classList.remove('blinking-winner');
+}
+
+
+function highlightUndecided() {
+    for (let i = 1; i <= 9; i++) {
+        let field = document.getElementById(`img-${i}`);
+        field.classList.add('blinking-winner');
+    }
+    setTimeout(removeHighlightUndecided, 1500);
+}
+
+
+function removeHighlightUndecided() {
+    for (let i = 1; i <= 9; i++) {
+        let field = document.getElementById(`img-${i}`);
+        field.classList.remove('blinking-winner');
+    }
 }
 
 
@@ -164,11 +206,11 @@ function updateCounter(undecidedI) {
         undecidedCounter++;
         undicidedCounterinnerHTML();
     } else {
-        if (player == 'Spieler 1') {
+        if (player == 'Spieler-1') {
             player1Counter++;
             p1CounterinnerHTML();
         }
-        if (player == 'Spieler 2') {
+        if (player == 'Spieler-2') {
             player2Counter++;
             p2CounterinnerHTML();
         }
@@ -215,9 +257,9 @@ function showGameModePopover() {
 
 function changeGameMode() {
     if (gameMode == 0) {
-        activateGameMode('Spieler 2', 'twoplayer', 1);
+        activateGameMode('Spieler-2', 'twoplayer', 1);
     } else {
-        activateGameMode('Spieler 1', 'singleplayer', 0);
+        activateGameMode('Spieler-1', 'singleplayer', 0);
     }
     closeGameModePopover();
 }
@@ -244,7 +286,7 @@ function clearGameStatus() {
 
 
 function secondPlayerNameinnerHTML(playerName) {
-    let playerNameSpan = document.getElementById('second-player');
+    let playerNameSpan = document.getElementById('Spieler-2');
     playerNameSpan.innerHTML = `${playerName}`;
 }
 
@@ -277,6 +319,7 @@ function clearCounterinnerHTML() {
     undicided.innerHTML = 0;
 }
 
+
 function showImpressumOrPrivacyPolicy(imp_pri) {
     let impPri = document.getElementById(`${imp_pri}`);
     impPri.classList.remove('d-none');
@@ -286,4 +329,14 @@ function showImpressumOrPrivacyPolicy(imp_pri) {
 function closeImpressumOrPrivacyPolicy(imp_pri) {
     let impPri = document.getElementById(`${imp_pri}`);
     impPri.classList.add('d-none');
+}
+
+function playerNameActive() {
+    let playerSpan = document.getElementById(`${player}`);
+    playerSpan.classList.add('player-active');
+}
+
+function playerNameInactive() {
+    let playerSpan = document.getElementById(`${player}`);
+    playerSpan.classList.remove('player-active');
 }

@@ -27,8 +27,8 @@ tr {
 
 td {
     cursor: pointer;
-    width: 133px;
-    height: 133px;
+    width: 183px;
+    height: 183px;
     border: 3px solid white;
 }
 
@@ -56,7 +56,7 @@ tr td:last-child {
 .cycle {
     transition: all 225ms ease-in-out;
     filter: invert();
-    height: 109px;
+    height: 163px;
     margin-left: 10px;
     margin-top: 6px;
 }
@@ -67,26 +67,34 @@ tr td:last-child {
     padding-right: 36px;
     margin-top: 20px;
     border-top: 1px solid white;
+    position: relative;
     display: flex;
     flex-direction: row;
-    width: 50%;
+    justify-content: center;
+    width: 70%;
     color: white;
+    font-size: 25px;
 }
 
 .user-counter-div {
     display: flex;
     flex-direction: column;
-    margin-left: 25px;
+    min-width: 250px;
 }
 
 .game-mode {
+    position: absolute;
+    right: 50px;
+    top: 20px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 15px;
-    margin-top: 10px;
     min-width: 45px;
+}
+
+.game-mode span {
+    font-size: 15px;
 }
 
 .game-mode img {
@@ -94,12 +102,7 @@ tr td:last-child {
     filter: invert();
 }
 
-.game-mode span {
-    font-size: 13px;
-}
-
 .user-span {
-    width: 160px;
     display: flex;
     justify-content: space-between;
 }
@@ -115,8 +118,9 @@ tr td:last-child {
 .footer {
     background-color: black;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     text-align: center;
+    justify-content: space-evenly;
     border-top: 1px solid white;
     width: 80%;
     padding: 10px;
@@ -163,22 +167,26 @@ tr td:last-child {
     border-radius: 5px;
     color: white;
     background-color: black;
-    width: 250px;
-    height: 115px;
+    width: 300px;
+    height: 165px;
+    font-size: 21px;
 }
 
 .popover button {
     cursor: pointer;
     color: white;
     background-color: black;
-    border: 1.5px solid white;
+    border: 2px solid white;
     border-radius: 5px;
+    width: 85px;
+    font-size: 16px;
 }
 
 .popover-button-div {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    height: 30px;
 }
 
 .popover button:nth-child(1) {
@@ -219,19 +227,18 @@ tr td:last-child {
 
 .privacy-policy {
     overflow: hidden;
-    background-color: white;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    box-shadow: 1px 3px 8px 3px gray;
     height: 80%;
     width: 80%;
     font-size: 12px;
     padding: 15px;
+    background-color: black;
+    color: white;
 }
 
 .impressum {
     padding: 20px;
-    background-color: white;
+    background-color: black;
+    color: white;
 }
 
 .close-button-div {
@@ -240,11 +247,35 @@ tr td:last-child {
 }
 
 .close-button {
+    filter: invert();
     cursor: pointer;
     height: 25px;
 }
 
-@media(max-width:420px) {
+.blinking-winner {
+
+    animation: blink-animation 500ms steps(5, start) infinite;
+    -webkit-animation: blink-animation 500ms steps(5, start) infinite;
+}
+
+.player-active {
+    border-bottom: 3px solid white;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+
+}
+
+@media(max-width:580px) {
     td {
         width: 7em;
         height: 7em;
@@ -252,21 +283,34 @@ tr td:last-child {
 
     .cycle {
         height: 6em;
+        margin-left: 0.5em;
+        margin-top: 0.3em;
     }
 
     .user-counter-div {
-        margin-left: 0em;
+        min-width: 11em;
     }
 
     .game-info {
-        margin-left: 1.4em;
+        font-size: 1em;
+    }
+
+    .game-mode {
+        min-width: 3em;
+        right: 1em;
+        top: 1.4em;
     }
 
     .footer {
-        font-size: 0.8em !important;
+        font-size: 1.2em !important;
+        flex-direction: column;
     }
 
     .footer a {
         font-size: 0.9em !important
+    }
+
+    .impressum {
+        font-size: 0.9em;
     }
 }
