@@ -212,7 +212,7 @@ function updateCounter(undecidedI) {
     }
 
     if (player == 'Spieler-2') {
-        checkIfVsPcOrVsHumanSound();
+        checkIfComputerOrPlayerSound();
         player2Counter++;
         p2CounterinnerHTML();
     }

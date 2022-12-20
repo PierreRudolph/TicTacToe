@@ -1,7 +1,8 @@
 function computerTimeoutBeforeAct() {
     const timeout = fields.length == 0 ? 3000 : 1500;
-    let soundTimeout = timeout - 1300;
-    setTimeout(function () { playAnySound('computer-processing') }, soundTimeout);
+    let soundTimeout = timeout - 1200;
+    setTimeout(function () { playAnySound('computer-processing-short') }, soundTimeout);
+
     setTimeout(computer, timeout);
 }
 
