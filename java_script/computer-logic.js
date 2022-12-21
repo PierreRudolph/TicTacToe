@@ -44,7 +44,7 @@ function calculateField() {
 function checkIfCrossOrCycle(look4twoX, look4twoO) {
     /*das ist eine if false abfrage*/
     if (!(look4twoX >= 1 || look4twoO >= 1))
-        return 1;
+        return generateNum(1, 9);
 
     if (look4twoX >= 1)
         return look4twoX;
@@ -54,59 +54,67 @@ function checkIfCrossOrCycle(look4twoX, look4twoO) {
 
 
 function checkFieldNum9Times(fieldNum) {
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    let checkedNum;
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
-    fieldNum = checkField(fieldNum);
-    fieldNum = ifZeroPushAndNewNum(fieldNum);
+    checkedNum = checkField(fieldNum);
+    fieldNum = ifZeroPushAndNewNum(fieldNum, checkedNum);
 
     return fieldNum;
 }
 
 
-function ifZeroPushAndNewNum(fieldNum) {
-    fieldNum = ifZeroPushExcludedList(fieldNum);
-    fieldNum = ifZeroGenerateNewNum(fieldNum);
-    return fieldNum;
-}
-
-
-function ifZeroGenerateNewNum(num) {
-    if (num == 0) {
-        return num = generateNum(1, 9);
+function checkField(number) {
+    let td = document.getElementById(`field-${number}`);
+    if (td.getElementsByTagName('img').length > 0) {
+        return 0;
     } else {
-        return num;
+        return number;
     }
 }
 
 
-function ifZeroPushExcludedList(num) {
-    if (num == 0) {
-        excludedNumbers.push(num);
-        return num = generateNum(1, 9);
+function ifZeroPushAndNewNum(fieldNum, checkedNum) {
+    ifZeroPushExcludedList(fieldNum, checkedNum);
+    checkedNum = ifZeroGenerateNewNum(checkedNum);
+    return checkedNum;
+}
+
+
+function ifZeroGenerateNewNum(fieldNum) {
+    if (fieldNum == 0) {
+        return fieldNum = generateNum(1, 9);
     } else {
-        return num;
+        return fieldNum;
+    }
+}
+
+
+function ifZeroPushExcludedList(fieldNum, checkedNum) {
+    if (checkedNum == 0) {
+        excludedNumbers.push(fieldNum);
     }
 }
 
@@ -127,16 +135,6 @@ function checkForBestField(cycleOrX) {
 
     if (querNum > 0)
         return querNum;
-}
-
-
-function checkField(number) {
-    let td = document.getElementById(`field-${number}`);
-    if (td.getElementsByTagName('img').length > 0) {
-        return 0;
-    } else {
-        return number;
-    }
 }
 
 
