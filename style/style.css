@@ -352,3 +352,14 @@ tr td:last-child {
         font-size: 0.9em;
     }
 }
+
+@media(max-width:360px) {
+    td {
+        width: 6em;
+        height: 6em;
+    }
+
+    .cycle {
+        height: 5em;
+    }
+}
