@@ -1,6 +1,5 @@
 let excludedNumbers = [];
 let fields = [];
-
 let player = 'Spieler-1';
 let player1Counter = 0;
 let player2Counter = 0;
@@ -79,13 +78,13 @@ function nextRound(i) {
     fields.length = '';
     excludedNumbers.length = '';
     updateCounter(i);
-    setTimeout(clearField, 2000);
+    setTimeout(clearFields, 2000);
 }
 
 
 function checkForWinner() {
     checkQuerOfThree();
-    checkVertikalofThree();
+    checkVertikalOfThree();
     checkHorizontalOfThree();
     checkIfUndicided();
 }
@@ -102,59 +101,42 @@ function checkIfUndicided() {
 }
 
 
+function checkHorizontalOfThree() {
+    /*horizontale abfragen*/
+    checkIfThreeInARow(0, 1, 2);
+    checkIfThreeInARow(3, 4, 5);
+    checkIfThreeInARow(6, 7, 8);
+}
+
+
+function checkVertikalOfThree() {
+    /*vertikale abfragen*/
+    checkIfThreeInARow(0, 3, 6);
+    checkIfThreeInARow(1, 4, 7);
+    checkIfThreeInARow(2, 5, 8);
+}
+
+
 function checkQuerOfThree() {
     /*Quer abfragen*/
-    if (fields[0] == fields[4] && fields[4] == fields[8] && fields[0]) {
-        highlightWinner(1, 5, 9);
-        nextRound();
-    }
+    checkIfThreeInARow(0, 4, 8);
+    checkIfThreeInARow(2, 4, 6);
+}
 
-    if (fields[2] == fields[4] && fields[4] == fields[6] && fields[2]) {
-        highlightWinner(3, 5, 7);
+
+function checkIfThreeInARow(fieldOne, fieldTwo, fieldThree) {
+    if (checkIfFieldDefined(fieldOne) && (fields[fieldOne] == fields[fieldTwo] && fields[fieldTwo] == fields[fieldThree])) {
+        highlightWinner(fieldOne + 1, fieldTwo + 1, fieldThree + 1);
         nextRound();
     }
 }
 
-
-function checkVertikalofThree() {
-    /*horizontale abfragen*/
-    if (fields[0] == fields[1] && fields[1] == fields[2] && fields[0]) {
-        highlightWinner(1, 2, 3);
-        nextRound();
-    }
-
-    if (fields[3] == fields[4] && fields[4] == fields[5] && fields[3]) {
-        highlightWinner(4, 5, 6);
-        nextRound();
-    }
-
-    if (fields[6] == fields[7] && fields[7] == fields[8] && fields[6]) {
-        highlightWinner(7, 8, 9);
-        nextRound();
-    }
+function checkIfFieldDefined(fieldOne) {
+    if (fields[fieldOne])
+        return true;
 }
 
-
-function checkHorizontalOfThree() {
-    /*vertikale abfragen*/
-    if (fields[0] == fields[3] && fields[3] == fields[6] && fields[0]) {
-        highlightWinner(1, 4, 7);
-        nextRound();
-    }
-
-    if (fields[1] == fields[4] && fields[4] == fields[7] && fields[1]) {
-        highlightWinner(2, 5, 8);
-        nextRound();
-    }
-
-    if (fields[2] == fields[5] && fields[5] == fields[8] && fields[2]) {
-        highlightWinner(3, 6, 9);
-        nextRound();
-    }
-}
-
-
-function clearField() {
+function clearFields() {
     for (let i = 1; i <= 9; i++) {
         let td = document.getElementById(`field-${i}`);
         td.innerHTML = '';
@@ -197,8 +179,8 @@ function removeHighlightUndecided() {
 }
 
 
-function updateCounter(undecidedI) {
-    if (undecidedI == 'undicided') {
+function updateCounter(undecided) {
+    if (undecided == 'undicided') {
         undecidedCounter++;
         undicidedCounterinnerHTML();
         return;
@@ -285,7 +267,7 @@ function activateGameMode(playerName, imgName, modeNum) {
 
 
 function clearGameStatus() {
-    clearField();
+    clearFields();
     clearCounterinnerHTML();
     player1Counter = 0;
     player2Counter = 0;
@@ -333,14 +315,25 @@ function clearCounterinnerHTML() {
 function showImpressumOrPrivacyPolicy(imp_pri) {
     let impPri = document.getElementById(`${imp_pri}`);
     impPri.classList.remove('d-none');
+    bodyOverflowOnOff(1);
 }
 
 
 function closeImpressumOrPrivacyPolicy(imp_pri) {
     let impPri = document.getElementById(`${imp_pri}`);
     impPri.classList.add('d-none');
+    bodyOverflowOnOff(0);
 }
 
+function bodyOverflowOnOff(onOff) {
+    let body = document.getElementById('body');
+    if (onOff == 1) {
+        body.classList.add('overflow-hidden');
+    }
+    if (onOff == 0) {
+        body.classList.remove('overflow-hidden');
+    }
+}
 
 function playerNameActive() {
     let playerSpan = document.getElementById(`${player}`);
@@ -368,4 +361,19 @@ function playAnySound(soundName) {
     sound.volume = 0.6;
     sound.load();
     sound.play();
+}
+
+
+async function includeHTML() {
+    let includeElements = document.querySelectorAll('[w3-include-html]');
+    for (let i = 0; i < includeElements.length; i++) {
+        const element = includeElements[i];
+        file = element.getAttribute("w3-include-html");
+        let resp = await fetch(file);
+        if (resp.ok) {
+            element.innerHTML = await resp.text();
+        } else {
+            element.innerHTML = 'Page not found';
+        }
+    }
 }

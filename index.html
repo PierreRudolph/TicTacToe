@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="img/favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-icon-72x72.png">
@@ -31,7 +30,7 @@
     <title>Tic Tac Toe</title>
 </head>
 
-<body onload="playBackgroundMusic()">
+<body id="body" onload="playBackgroundMusic();includeHTML()">
 
     <audio src="sound/pulse-red-hydra-2times.mp3" id="background-music" controls muted>Hintergrundmusik</audio>
 
@@ -116,7 +115,7 @@
 
     </div>
 
-    <div id="impressum" class="shadow-screen-impressum d-none">
+    <!-- <div id="impressum" class="shadow-screen-impressum d-none">
         <div class="impressum">
             <div class="close-button-div">
                 <img class="close-button" src="img/x.png" onclick="closeImpressumOrPrivacyPolicy('impressum')">
@@ -186,9 +185,9 @@
             </div>
             <p>Quelle: <a href="https://www.e-recht24.de">https://www.e-recht24.de</a></p>
         </div>
-    </div>
+    </div> -->
 
-    <div id="privacy-policy" class="shadow-screen-privacy d-none">
+    <!-- <div id="privacy-policy" class="shadow-screen-privacy d-none">
 
         <div class="privacy-policy">
             <div class="close-button-div">
@@ -309,6 +308,14 @@
             </div>
         </div>
 
+    </div> -->
+
+    <div id="impressum" class="shadow-screen-impressum d-none">
+        <div w3-include-html="templates/imprint.html" class="impressum"></div>
+    </div>
+
+    <div id="privacy-policy" class="shadow-screen-privacy d-none">
+        <div w3-include-html="templates/data.html" class="privacy-policy"></div>
     </div>
 
     <div class="dim-display d-none" id="dim-display">
