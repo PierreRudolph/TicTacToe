@@ -6,6 +6,9 @@ let player2Counter = 0;
 let undecidedCounter = 0;
 let gameMode = 0;
 let firstClick = true;
+let backgrMusicVol = 0.3;
+let fadeIntervalTact = 200;
+
 
 function gameStart(position) {
     playBackgroundMusic();
@@ -75,7 +78,7 @@ function getFieldinnerHtml(position, td, cycleOrX) {
 }
 
 
-function nextRound(i) {
+function nextGame(i) {
     fields.length = '';
     excludedNumbers.length = '';
     updateCounter(i);
@@ -97,7 +100,7 @@ function checkIfUndicided() {
     /*unentschieden abfrage*/
     if (realLength == 9) {
         highlightUndecided();
-        nextRound('undicided')
+        nextGame('undicided')
     }
 }
 
@@ -128,14 +131,16 @@ function checkQuerOfThree() {
 function checkIfThreeInARow(fieldOne, fieldTwo, fieldThree) {
     if (checkIfFieldDefined(fieldOne) && (fields[fieldOne] == fields[fieldTwo] && fields[fieldTwo] == fields[fieldThree])) {
         highlightWinner(fieldOne + 1, fieldTwo + 1, fieldThree + 1);
-        nextRound();
+        nextGame();
     }
 }
+
 
 function checkIfFieldDefined(fieldOne) {
     if (fields[fieldOne])
         return true;
 }
+
 
 function clearFields() {
     for (let i = 1; i <= 9; i++) {
@@ -182,23 +187,36 @@ function removeHighlightUndecided() {
 
 function updateCounter(undecided) {
     if (undecided == 'undicided') {
-        undecidedCounter++;
-        undicidedCounterinnerHTML();
+        setUndicided();
         return;
     }
-
     if (player == 'Spieler-1') {
-        playAnySound('winning-sound');
-        player1Counter++;
-        p1CounterinnerHTML();
+        setPlayerOneWins();
         return;
     }
-
     if (player == 'Spieler-2') {
-        checkIfComputerOrPlayerSound();
-        player2Counter++;
-        p2CounterinnerHTML();
+        setPlayerTwoWins();
     }
+}
+
+
+function setUndicided() {
+    undecidedCounter++;
+    undicidedCounterinnerHTML();
+}
+
+
+function setPlayerOneWins() {
+    playAnySound('winning-sound');
+    player1Counter++;
+    p1CounterinnerHTML();
+}
+
+
+function setPlayerTwoWins() {
+    checkIfComputerOrPlayerSound();
+    player2Counter++;
+    p2CounterinnerHTML();
 }
 
 
@@ -326,6 +344,7 @@ function closeImpressumOrPrivacyPolicy(imp_pri) {
     bodyOverflowOnOff(0);
 }
 
+
 function bodyOverflowOnOff(onOff) {
     let body = document.getElementById('body');
     if (onOff == 1) {
@@ -336,8 +355,6 @@ function bodyOverflowOnOff(onOff) {
     }
 }
 
-var vol = 0.3;
-var interval = 200; // 200ms interval
 
 function playerNameActive() {
     let playerSpan = document.getElementById(`${player}`);
@@ -350,46 +367,63 @@ function playerNameInactive() {
     playerSpan.classList.remove('player-active');
 }
 
+
 function controlAudio() {
     let audio = document.getElementById('background-music');
     if (!isPlaying(audio)) {
-        audio.volume = 0;
-        vol = 0;
-        audio.play();
-        audio.loop = true;
+        setAudioPropertys(audio);
         changeAudioButtonTo('pause');
-        var fadein = setInterval(
-            function () {
-                if (vol <= 0.15) {
-                    vol += 0.05;
-                    audio.volume = vol;
-                }
-                else {
-                    clearInterval(fadein);
-                }
-            }, interval);
+        setVolIncrInterval(audio, backgrMusicVol);
     } else {
-        var fadeout = setInterval(
-            function () {
-                if (vol > 0.05) {
-                    vol -= 0.05;
-                    audio.volume = vol;
-                }
-                else {
-                    clearInterval(fadeout);
-                    audio.pause();
-                    vol = 0;
-                }
-            }, interval);
+        setVolDecrInterval(audio);
         changeAudioButtonTo('play');
     }
-    console.log(audio.volume)
 }
+
+
+function setAudioPropertys(audio) {
+    audio.volume = 0;
+    backgrMusicVol = 0;
+    audio.play();
+    audio.loop = true;
+}
+
+
+function setVolIncrInterval(audio) {
+    let fadein = setInterval(
+        function () {
+            if (backgrMusicVol <= 0.15) {
+                backgrMusicVol += 0.05;
+                audio.volume = backgrMusicVol;
+            }
+            else {
+                clearInterval(fadein);
+            }
+        }, fadeIntervalTact);
+}
+
+
+function setVolDecrInterval(audio) {
+    let fadeout = setInterval(
+        function () {
+            if (backgrMusicVol > 0.05) {
+                backgrMusicVol -= 0.05;
+                audio.volume = backgrMusicVol;
+            }
+            else {
+                clearInterval(fadeout);
+                audio.pause();
+                backgrMusicVol = 0;
+            }
+        }, fadeIntervalTact);
+}
+
 
 function changeAudioButtonTo(imgName) {
     let button = document.getElementById('audio-control');
     button.src = `img/${imgName}.png`;
 }
+
 
 function playBackgroundMusic() {
     let music = document.getElementById('background-music');
@@ -402,6 +436,7 @@ function playBackgroundMusic() {
         changeAudioButtonTo('pause');
     }
 }
+
 
 function isPlaying(audelem) {
     return !audelem.paused;
