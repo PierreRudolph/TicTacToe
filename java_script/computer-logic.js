@@ -1,20 +1,20 @@
 function computerTimeoutBeforeAct() {
     const timeout = fields.length == 0 ? 3000 : 1500;
     let soundTimeout = timeout - 1200;
+    activateComputerName();
     setTimeout(function () { playAnySound('computer-processing-short') }, soundTimeout);
     setTimeout(computer, timeout);
 }
 
 
 function computer() {
-    computerActivate();
     computerAction();
     checkForWinner();
     playerTimeout('Spieler-1');
 }
 
 
-function computerActivate() {
+function activateComputerName() {
     playerNameInactive(player);
     player = 'Spieler-2';
     playerNameActive(player);

@@ -5,9 +5,10 @@ let player1Counter = 0;
 let player2Counter = 0;
 let undecidedCounter = 0;
 let gameMode = 0;
-
+let firstClick = true;
 
 function gameStart(position) {
+    playBackgroundMusic();
     if (gameMode == 0) {
         showImgVsPc(position);
     } else {
@@ -335,6 +336,9 @@ function bodyOverflowOnOff(onOff) {
     }
 }
 
+var vol = 0.3;
+var interval = 200; // 200ms interval
+
 function playerNameActive() {
     let playerSpan = document.getElementById(`${player}`);
     playerSpan.classList.add('player-active');
@@ -346,13 +350,61 @@ function playerNameInactive() {
     playerSpan.classList.remove('player-active');
 }
 
+function controlAudio() {
+    let audio = document.getElementById('background-music');
+    if (!isPlaying(audio)) {
+        audio.volume = 0;
+        vol = 0;
+        audio.play();
+        audio.loop = true;
+        changeAudioButtonTo('pause');
+        var fadein = setInterval(
+            function () {
+                if (vol <= 0.15) {
+                    vol += 0.05;
+                    audio.volume = vol;
+                }
+                else {
+                    clearInterval(fadein);
+                }
+            }, interval);
+    } else {
+        var fadeout = setInterval(
+            function () {
+                if (vol > 0.05) {
+                    vol -= 0.05;
+                    audio.volume = vol;
+                }
+                else {
+                    clearInterval(fadeout);
+                    audio.pause();
+                    vol = 0;
+                }
+            }, interval);
+        changeAudioButtonTo('play');
+    }
+    console.log(audio.volume)
+}
+
+function changeAudioButtonTo(imgName) {
+    let button = document.getElementById('audio-control');
+    button.src = `img/${imgName}.png`;
+}
 
 function playBackgroundMusic() {
     let music = document.getElementById('background-music');
-    music.volume = 0.3;
-    music.load();
-    music.play();
-    music.loop = true;
+    if (!isPlaying(music) && firstClick) {
+        music.volume = 0.15;
+        music.load();
+        music.play();
+        music.loop = true;
+        firstClick = false;
+        changeAudioButtonTo('pause');
+    }
+}
+
+function isPlaying(audelem) {
+    return !audelem.paused;
 }
 
 
