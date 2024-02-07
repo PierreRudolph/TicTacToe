@@ -237,6 +237,48 @@ tr td:last-child {
     z-index: 3;
 }
 
+.shadow-screen-preload {
+    overflow: hidden;
+    background-color: rgba(150, 150, 150, 0.869);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    z-index: 3;
+}
+
+.loading-div {
+    position: relative;
+    background-color: white;
+    width: 200px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-bark {
+    width: 0px;
+    height: 30px;
+    border-inline: solid black;
+    border-width: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-text {
+    color: white;
+    position: absolute;
+    top: 35px;
+}
+
 .privacy-policy {
     overflow-y: auto;
     height: 100vh;
@@ -376,6 +418,16 @@ tr td:last-child {
         font-size: 1em;
     }
 
+    .audio-btn-div {
+        left: 1em;
+        top: 2em;
+    }
+
+    .button-img {
+        width: 2em;
+        height: 2em;
+    }
+
     .game-mode {
         min-width: 3em;
         right: 1em;
@@ -404,5 +456,13 @@ tr td:last-child {
 
     .cycle {
         height: 5em;
+    }
+
+    .audio-btn-div {
+        left: 0em;
+    }
+
+    .game-mode {
+        right: 0em;
     }
 }

@@ -24,13 +24,14 @@
     <link rel="stylesheet" href="style/style.css">
     <script src="java_script/script.js"></script>
     <script src="java_script/computer-logic.js"></script>
+    <script src="java_script/preloadCache.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
 </head>
 
-<body id="body" onload="includeHTML()">
+<body id="body" onload="includeHTML();init()">
 
     <audio src="sound/battle-time.mp3" id="background-music">Hintergrundmusik</audio>
     <div class="main-div" id="main-div">
@@ -117,6 +118,14 @@
         </div>
 
     </div>
+
+    <div class="shadow-screen-preload" id="preload-screen">
+        <div class="loading-div">
+            <div class="loading-bark" id="loading-bark"></div>
+            <span class="loading-text" id="loading-text">Lade Spiel...</span>
+        </div>
+    </div>
+
     <div id="impressum" class="shadow-screen-impressum d-none">
         <div w3-include-html="templates/imprint.html" class="impressum"></div>
     </div>

@@ -6,8 +6,16 @@ let player2Counter = 0;
 let undecidedCounter = 0;
 let gameMode = 0;
 let firstClick = true;
-let backgrMusicVol = 0.3;
+let backgrMusicVol = 0.15;
 let fadeIntervalTact = 200;
+
+
+async function init() {
+    console.log('sart caching');
+    await loadImagesToCache();
+
+    console.log('finish caching');
+}
 
 
 function gameStart(position) {
