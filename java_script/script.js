@@ -11,10 +11,7 @@ let fadeIntervalTact = 200;
 
 
 async function init() {
-    console.log('sart caching');
     await loadImagesToCache();
-
-    console.log('finish caching');
 }
 
 
@@ -30,7 +27,6 @@ function gameStart(position) {
 
 function showImgVsHuman(position) {
     let td = document.getElementById(`field-${position}`);
-
     if (checkPlayerAndIfFieldFree(td, 'Spieler-1')) {
         playerAction(position, td, 'kreis');
         playerTimeout('Spieler-2')
@@ -332,7 +328,6 @@ function clearCounterinnerHTML() {
     let p1Counter = document.getElementById('player1');
     let p2Counter = document.getElementById('player2');
     let undicided = document.getElementById('undecided');
-
     p1Counter.innerHTML = 0;
     p2Counter.innerHTML = 0;
     undicided.innerHTML = 0;
